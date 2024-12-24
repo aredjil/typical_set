@@ -14,7 +14,8 @@ def create_gif(image_folder, output_path, m_range, duration=100):
     except Exception as e: 
         print(f"An execption occured {e}")
     try:
-        for m in tqdm(m_range, desc="Generating gif..."):
+        print("Generating the GIF...")
+        for m in m_range:
             file_name = f"plot_{m}.png"  
             file_path = os.path.join(image_folder, file_name)
             if os.path.exists(file_path):
@@ -59,8 +60,10 @@ def save_hist(n:int, max_m:int, min_m:int, step_m:int, hist_path:str, p:float, s
 
         counts, bins, patches = ax.hist(info_content, bins=bins, density=True, color="#2ca25f")
         ax.axvline(aep.get_entropy() * n, color='red', linestyle='--', label='nH(X)')
-        ax.set_ylim(0, max(counts) * 1.1)  
-        ax.set_xlim(600, n)
+        ax.set_ylim(0, max(counts) * 1.1) 
+        # NOTE: LOWER BOUND SHOULD BE ADJUSTED if you are going to change p 
+        # This value was choosen ad hoc to center the plot :p 
+        ax.set_xlim(900, n+10)
         ax.set_title(f"\n {m} sequences \n sequence size = {n}\n p = {p}")
         ax.set_xlabel("Information Content (bits)")
         ax.set_ylabel("Frequency")
